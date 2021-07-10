@@ -14,7 +14,7 @@ app.use(express.static(dir));
 
 const corsOptions = {
   origin: "*",
-};
+}; 
 
 app.use(cors(corsOptions));
 
@@ -68,3 +68,5 @@ app.listen(PORT, () => {
 //   });
 
 // }
+
+// omc-10
