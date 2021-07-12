@@ -1,6 +1,6 @@
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
-  PORT: process.env.PORT,
+  PORT: process.env.PORT || 8080,
 
   /** DATABASE */
   db: {
@@ -9,6 +9,12 @@ module.exports = {
     DB_PASS: "NC55azZLtCuUs#5Zi00y",
     DB_NAME: "wallapop",
     dialect: "mysql",
+
+    // DB_HOST: "localhost",
+    // DB_USER: "root",
+    // DB_PASS: "",
+    // DB_NAME: "wallapop",
+    // dialect: "mysql",
 
     // pool is optional, it will be used for Sequelize connection pool configuration
     pool: {

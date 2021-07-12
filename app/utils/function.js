@@ -5,12 +5,12 @@ const getRole = (id) => {
     id == 1
       ? "Super Admin"
       : id == 2
-        ? "Admin"
-        : id == 3
-          ? "Manager"
-          : id == 4
-            ? "Employee"
-            : "Wrong";
+      ? "Admin"
+      : id == 3
+      ? "Manager"
+      : id == 4
+      ? "Employee"
+      : "Wrong";
   return role;
 };
 
@@ -26,27 +26,31 @@ const upload = (req, res) => {
     __dirname +
     `/../../public/uploads/${req.body.foldername}/` +
     req.body.filename +
-    (file.name.includes(".png")
+    (file.name.includes(".pdf")
+      ? ".pdf"
+      : file.name.includes(".png")
       ? ".png"
       : file.name.includes(".jpg")
-        ? ".jpg"
-        : file.name.includes(".jpeg")
-          ? ".jpeg"
-          : ".png");
+      ? ".jpg"
+      : file.name.includes(".jpeg")
+      ? ".jpeg"
+      : ".png");
 
   file.mv(uploadPath, function (err) {
     if (err) return res.status(500).send(err);
 
     res.send(
       `/uploads/${req.body.foldername}/` +
-      req.body.filename +
-      (file.name.includes(".png")
-        ? ".png"
-        : file.name.includes(".jpg")
+        req.body.filename +
+        (file.name.includes(".pdf")
+          ? ".pdf"
+          : file.name.includes(".png")
+          ? ".png"
+          : file.name.includes(".jpg")
           ? ".jpg"
           : file.name.includes(".jpeg")
-            ? ".jpeg"
-            : ".png")
+          ? ".jpeg"
+          : ".png")
     );
   });
 };
@@ -76,7 +80,7 @@ async function getMemberProfileImageByIdString(string) {
       result.push(user.dataValues.photo_url);
     }
     resolve(result);
-  })
+  });
 }
 
 async function getAdminAndMangerInfoByWorkSpaceId(id) {
@@ -91,7 +95,7 @@ async function getAdminAndMangerInfoByWorkSpaceId(id) {
     });
     const admin = await db.user.findOne({
       where: { id: workpoint.dataValues.admin_id },
-    })
+    });
     const manager = await db.user.findOne({
       where: { id: workplace.dataValues.manager_id },
     });
@@ -110,9 +114,9 @@ async function getAdminAndMangerInfoByWorkSpaceId(id) {
 async function getUserInfoById(id) {
   const user = await db.user.findOne({
     where: {
-      id: id
-    }
-  })
+      id: id,
+    },
+  });
   return user.dataValues;
 }
 
@@ -122,5 +126,5 @@ module.exports = {
   getMemberByIdString,
   getMemberProfileImageByIdString,
   getAdminAndMangerInfoByWorkSpaceId,
-  getUserInfoById
+  getUserInfoById,
 };

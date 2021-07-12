@@ -48,6 +48,9 @@ require("./app/routes/message.routes")(app);
 require("./app/routes/workpoint.routes")(app);
 require("./app/routes/department.routes")(app);
 require("./app/routes/workplace.routes")(app);
+require("./app/routes/providers.routes")(app);
+require("./app/routes/order.routes")(app);
+require("./app/routes/service.routes")(app);
 
 // set port, listen for requests
 const PORT = config.PORT;

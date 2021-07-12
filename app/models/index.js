@@ -32,6 +32,9 @@ db.message = require("./message.model.js")(sequelize, Sequelize, DataTypes);
 db.workpoint = require("./workpoint.model.js")(sequelize, Sequelize, DataTypes);
 db.workplace = require("./workplace.model.js")(sequelize, Sequelize, DataTypes);
 db.department = require("./department.model.js")(sequelize, Sequelize, DataTypes);
+db.providers = require("./providers.model.js")(sequelize, Sequelize, DataTypes);
+db.order = require("./order.model.js")(sequelize, Sequelize, DataTypes);
+db.service = require("./service.model.js")(sequelize, Sequelize, DataTypes);
 
 db.workpoint.belongsTo(db.user, {
   through: "users",
@@ -73,6 +76,23 @@ db.message.belongsTo(db.user, {
   foreignKey: "from",
   otherKey: 'id'
 })
+
+db.order.belongsTo(db.providers, {
+  through: "providers",
+  foreignKey: "provider_id",
+  otherKey: "id"
+});
+
+db.service.belongsTo(db.workpoint, {
+  through: "workpints",
+  foreignKey: "workpoint_id",
+  otherKey: "id"
+})
+
+// db.providers.belongsTo(db.providers, {
+//   otherKey: "id"
+// });
+
 // db.workpoint.hasMany(db.user);
 // db.role = require("./role.model.js")(sequelize, Sequelize, DataTypes);
 

@@ -163,6 +163,111 @@ checkDuplicateDepartmentNameOnUpdate = async (req, res, next) => {
   next();
 };
 
+checkDuplicateProviderNameOnCreate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    return res.status(400).send({
+      message: "Failed! This Provider name is already in use!",
+    });
+  }
+  next();
+};
+
+checkDuplicateProviderNameOnUpdate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    if (
+      !(
+        provider.dataValues.id == req.body.id &&
+        provider.dataValues.name == req.body.name
+      )
+    ) {
+      return res.status(400).send({
+        message: "Failed! This Provider name is already in use!",
+      });
+    }
+  }
+  next();
+};
+
+checkDuplicateOrderNameOnCreate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    return res.status(400).send({
+      message: "Failed! This Provider name is already in use!",
+    });
+  }
+  next();
+};
+
+checkDuplicateOrderNameOnUpdate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    if (
+      !(
+        provider.dataValues.id == req.body.id &&
+        provider.dataValues.name == req.body.name
+      )
+    ) {
+      return res.status(400).send({
+        message: "Failed! This Provider name is already in use!",
+      });
+    }
+  }
+  next();
+};
+
+checkDuplicateServiceNameOnCreate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    return res.status(400).send({
+      message: "Failed! This Provider name is already in use!",
+    });
+  }
+  next();
+};
+
+checkDuplicateServiceNameOnUpdate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    if (
+      !(
+        provider.dataValues.id == req.body.id &&
+        provider.dataValues.name == req.body.name
+      )
+    ) {
+      return res.status(400).send({
+        message: "Failed! This Provider name is already in use!",
+      });
+    }
+  }
+  next();
+};
+
 const globalFunction = {
   checkDuplicateWorkpointName: checkDuplicateWorkpointName,
   checkDuplicateDepartmentOnUpdate: checkDuplicateDepartmentOnUpdate,
@@ -172,6 +277,12 @@ const globalFunction = {
   checkDuplicateWorkPlaceNameOnCreate: checkDuplicateWorkPlaceNameOnCreate,
   checkDuplicateDepartmentNameOnUpdate: checkDuplicateDepartmentNameOnUpdate,
   checkDuplicateDepartmentNameOnCreate: checkDuplicateDepartmentNameOnCreate,
+  checkDuplicateProviderNameOnCreate: checkDuplicateProviderNameOnCreate,
+  checkDuplicateProviderNameOnUpdate: checkDuplicateProviderNameOnUpdate,
+  checkDuplicateOrderNameOnCreate: checkDuplicateOrderNameOnCreate,
+  checkDuplicateOrderNameOnUpdate: checkDuplicateOrderNameOnUpdate,
+  checkDuplicateServiceNameOnCreate: checkDuplicateServiceNameOnCreate,
+  checkDuplicateSerivceNameOnUpdate: checkDuplicateServiceNameOnUpdate,
 };
 
 module.exports = globalFunction;
