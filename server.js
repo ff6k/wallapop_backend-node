@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Hi there, welcome to this tutorial." });
+  res.json({ message: "This is Wallapop Backend." });
 });
 
 app.post("/fileupload", upload);
