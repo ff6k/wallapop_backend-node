@@ -12,7 +12,7 @@ module.exports = {
 
     DB_HOST: "35.180.29.189",
     DB_USER: "admin1",
-    DB_PASS: "admin2021#5Zi00y",
+    DB_PASS: "admin2021",
     DB_NAME: "project2021",
     dialect: "mysql",
 
