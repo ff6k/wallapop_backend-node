@@ -10,11 +10,17 @@ module.exports = {
     // DB_NAME: "wallapop",
     // dialect: "mysql",
 
-    DB_HOST: "localhost",
-    DB_USER: "root",
-    DB_PASS: "",
-    DB_NAME: "wallapop",
+    DB_HOST: "35.180.29.189",
+    DB_USER: "admin1",
+    DB_PASS: "admin2021#5Zi00y",
+    DB_NAME: "project2021",
     dialect: "mysql",
+
+    // DB_HOST: "localhost",
+    // DB_USER: "root",
+    // DB_PASS: "",
+    // DB_NAME: "wallapop",
+    // dialect: "mysql",
 
     // pool is optional, it will be used for Sequelize connection pool configuration
     pool: {
