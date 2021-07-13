@@ -42,6 +42,18 @@ db.workpoint.belongsTo(db.user, {
   otherKey: "id"
 });
 
+db.department.belongsTo(db.user, {
+  through: "users",
+  foreignKey: "manager_id",
+  otherKey: "id"
+});
+
+db.department.belongsTo(db.workpoint, {
+  through: "workpoints",
+  foreignKey: "workpoint_id",
+  otherKey: "id"
+});
+
 db.department.belongsTo(db.workplace, {
   through: "workplaces",
   as:"workplace",

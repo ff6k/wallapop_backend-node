@@ -13,26 +13,57 @@ async function filter(data) {
   return new Promise(async function (resolve, reject) {
     for (var i = 0; i < data.length; i++) {
       let dataValues = data[i]["dataValues"];
-      const { id, is_active, is_delete, created_at, updated_at, employee_ids } =
-        dataValues;
+      const {
+        id,
+        is_active,
+        is_delete,
+        created_at,
+        updated_at,
+        user,
+        workpoint,
+        employee_ids,
+      } = dataValues;
       dataValues = {
         ...dataValues,
         created_at: moment(created_at).format("YYYY-MM-DD"),
         updated_at: moment(updated_at).format("YYYY-MM-DD"),
       };
+
+      if (user) {
+        dataValues = {
+          ...dataValues,
+          manager_id: user.id,
+          manager_str: user.name,
+        };
+      }
+
+      if (workpoint) {
+        const { user } = workpoint;
+        dataValues = {
+          ...dataValues,
+          workpoint_id: workpoint.id,
+          workpoint_str: workpoint.name,
+          admin_id: user.id,
+          admin_str: user.email,
+        };
+      }
+
       dataValues["emp_photos"] = await getMemberProfileImageByIdString(
         employee_ids
       );
+
       dataValues["emp_info"] = await getMemberByIdString(employee_ids);
-      const { admin, manager } = await getAdminAndMangerInfoByWorkSpaceId(id);
-      dataValues["admin_str"] = admin;
-      dataValues["manager_str"] = manager;
+
       dataValues["is_active_str"] = is_active == 1 ? "Active" : "Deactive";
       dataValues["is_delete_str"] = is_delete == 1 ? "Deleted" : "";
+
+      delete dataValues.user;
+      delete dataValues.workpoint;
+
       result.push(dataValues);
     }
     resolve(result);
-  })
+  });
 }
 
 exports.create = (req, res) => {
@@ -40,6 +71,8 @@ exports.create = (req, res) => {
   Department.create({
     name: req.body.name,
     description: req.body.description,
+    manager_id: req.body.manager_id,
+    workpoint_id: req.body.workpoint_id,
     employee_ids: req.body.employee_ids,
   })
     .then((data) => {
@@ -50,26 +83,92 @@ exports.create = (req, res) => {
     });
 };
 
-exports.get_list = (req, res) => {  
-  delaytime = delaytime < 2 ? delaytime + 4 : 0
+exports.get_list = (req, res) => {
+  delaytime = delaytime < 2 ? delaytime + 4 : 0;
   setTimeout(() => {
     const flag = req.body.flag;
     let condition;
+    let include = [
+      {
+        model: db.user,
+        as: "user",
+        attributes: {
+          exclude: [
+            "username",
+            "lastname",
+            "secondname",
+            "telephone",
+            "number",
+            "photo_url",
+            "role",
+            "address",
+            "password",
+            "admin_id",
+            "is_active",
+            "is_delete",
+            "created_at",
+            "updated_at",
+          ],
+        },
+      },
+      {
+        model: db.workpoint,
+        as: "workpoint",
+        attributes: {
+          exclude: [
+            "logo_url",
+            "address",
+            "zip_code",
+            "description",
+            "is_delete",
+            "is_active",
+            "photo_url",
+            "created_at",
+            "updated_at",
+          ],
+        },
+        include: [
+          {
+            model: db.user,
+            as: "user",
+            attributes: {
+              exclude: [
+                "username",
+                "name",
+                "lastname",
+                "secondname",
+                "telephone",
+                "number",
+                "photo_url",
+                "role",
+                "address",
+                "password",
+                "is_active",
+                "is_delete",
+                "created_at",
+                "updated_at",
+              ],
+            },
+          },
+        ],
+      },
+    ];
     condition =
       flag == "all"
-        ? {}
+        ? { include }
         : flag == "deactivated"
-          ? { where: { is_delete: 0 } }
-          : flag == "deleted"
-            ? { where: { is_active: 1 } }
-            : flag == "default"
-              ? {
-                where: {
-                  is_active: 1,
-                  is_delete: 0,
-                },
-              }
-              : {};
+        ? { where: { is_delete: 0 } }
+        : flag == "deleted"
+        ? { where: { is_active: 1 } }
+        : flag == "default"
+        ? {
+            where: {
+              is_active: 1,
+              is_delete: 0,
+            },
+            include,
+          }
+        : { include };
 
     Department.findAll(condition)
       .then(async (data) => {
@@ -79,7 +178,7 @@ exports.get_list = (req, res) => {
       .catch((err) => {
         res.status(500).send({ message: err.message });
       });
-  }, delaytime * 1000)
+  }, delaytime * 1000);
 };
 
 exports.update = (req, res) => {

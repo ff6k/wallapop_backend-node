@@ -16,25 +16,47 @@ async function filter(data) {
       workpoint,
       manager,
     } = dataValues;
+
     dataValues = {
       ...dataValues,
       created_at: moment(created_at).format("YYYY-MM-DD"),
       updated_at: moment(updated_at).format("YYYY-MM-DD"),
     };
+
     if (department) {
       dataValues["employee"] = await getMemberByIdString(
         department.employee_ids
       );
-      dataValues["department_str"] = department.name;
     }
+
+    if (department) {
+      const { user } = department;
+      dataValues = {
+        ...dataValues,
+        department_id: department.id,
+        department_str: department.name,
+        mangager_id: user.id,
+        manager_str: user.email,
+      };
+    }
+
     if (workpoint) {
-      const user = await getUserInfoById(workpoint.dataValues.admin_id);
-      dataValues["admin_str"] = user.username;
-      dataValues["workpoint_str"] = workpoint.dataValues.name;
+      const { user } = workpoint;
+      dataValues = {
+        ...dataValues,
+        workpoint_id: workpoint.id,
+        workpoint_str: workpoint.name,
+        admin_id: user.id,
+        admin_str: user.email,
+      };
     }
-    if (manager) dataValues["manager_str"] = manager.dataValues.username;
+
     dataValues["is_active_str"] = is_active == 1 ? "Active" : "Deactive";
     dataValues["is_delete_str"] = is_delete == 1 ? "Deleted" : "";
+
+    delete dataValues.department;
+    delete dataValues.workpoint;
+
     result.push(dataValues);
   }
   return result;
@@ -77,28 +99,30 @@ exports.get_list = (req, res) => {
           "updated_at",
         ],
       },
-    },
-    {
-      model: db.user,
-      as: "manager",
-      attributes: {
-        exclude: [
-          "name",
-          "lastname",
-          "secondname",
-          "telephone",
-          "email",
-          "address",
-          "number",
-          "password",
-          "role",
-          "is_delete",
-          "is_active",
-          "photo_url",
-          "created_at",
-          "updated_at",
-        ],
-      },
+      include: [
+        {
+          model: db.user,
+          as: "user",
+          attributes: {
+            exclude: [
+              "username",
+              "name",
+              "lastname",
+              "secondname",
+              "telephone",
+              "number",
+              "photo_url",
+              "role",
+              "address",
+              "password",
+              "is_active",
+              "is_delete",
+              "created_at",
+              "updated_at",
+            ],
+          },
+        },
+      ],
     },
     {
       model: db.department,
@@ -112,6 +136,30 @@ exports.get_list = (req, res) => {
           "updated_at",
         ],
       },
+      include: [
+        {
+          model: db.user,
+          as: "user",
+          attributes: {
+            exclude: [
+              "username",
+              "name",
+              "lastname",
+              "secondname",
+              "telephone",
+              "number",
+              "photo_url",
+              "role",
+              "address",
+              "password",
+              "is_active",
+              "is_delete",
+              "created_at",
+              "updated_at",
+            ],
+          },
+        },
+      ],
     },
   ];
   condition =

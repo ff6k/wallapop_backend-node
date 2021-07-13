@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       description: {
         type: DataTypes.STRING,
       },
+      manager_id: {
+        type: DataTypes.STRING,
+      },
       is_active: {
         type: DataTypes.STRING,
       },
