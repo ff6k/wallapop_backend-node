@@ -51,6 +51,8 @@ require("./app/routes/workplace.routes")(app);
 require("./app/routes/providers.routes")(app);
 require("./app/routes/order.routes")(app);
 require("./app/routes/service.routes")(app);
+require("./app/routes/holiday.routes")(app);
+require("./app/routes/petition.routes")(app);
 
 // set port, listen for requests
 const PORT = config.PORT;

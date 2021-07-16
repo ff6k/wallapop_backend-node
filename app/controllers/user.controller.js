@@ -58,6 +58,7 @@ exports.create = (req, res) => {
     role: req.body.role,
     password: pass.iv + "||" + pass.content,
     photo_url: req.body.photo_url,
+    document_url: ''
   })
     .then((user) => {
       res.send(user);
@@ -93,7 +94,7 @@ exports.update = (req, res) => {
     },
   })
     .then((num) => {
-      if (num == 1) {
+      if (num == 1) { 
         res.send({
           message: "User data was changed successfully.",
         });

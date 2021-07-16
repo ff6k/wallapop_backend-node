@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize, DataTypes) => {
-  const User = sequelize.define(
-    "user", // Model name
+  const Holiday = sequelize.define(
+    "holidays", // Model name
     {
       // Attributes
       id: {
@@ -8,44 +8,38 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
         defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
-      name: {
-        type: DataTypes.STRING,
-      },
-      lastname: {
-        type: DataTypes.STRING,
-      },
-      secondname: {
-        type: DataTypes.STRING,
-      },
-      telephone: {
-        type: DataTypes.STRING,
-      },
-      email: {
-        type: DataTypes.STRING,
-      },
-      address: {
-        type: DataTypes.STRING,
-      },
-      number: {
-        type: DataTypes.STRING,
-      },
-      password: {
-        type: DataTypes.STRING,
-      },
-      role: {
+      year: {
         type: DataTypes.NUMBER,
       },
-      is_delete: {
+      month: {
+        type: DataTypes.NUMBER,
+      },
+      workplace_id: {
+        type: DataTypes.STRING,
+      },
+      department_id: {
+        type: DataTypes.STRING,
+      },
+      employee_id: {
+        type: DataTypes.STRING,
+      },      
+      holidays: {
+        type: DataTypes.STRING,
+      },
+      local_holidays: {
+        type: DataTypes.STRING,
+      },
+      national_holidays: {
+        type: DataTypes.STRING,
+      },
+      state: {
         type: DataTypes.NUMBER,
       },
       is_active: {
         type: DataTypes.NUMBER,
       },
-      photo_url: {
-        type: DataTypes.STRING,
-      },
-      document_urls: {
-        type: DataTypes.STRING,
+      is_delete: {
+        type: DataTypes.NUMBER,
       },
     },
     {
@@ -60,5 +54,5 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
     }
   );
 
-  return User;
+  return Holiday;
 };

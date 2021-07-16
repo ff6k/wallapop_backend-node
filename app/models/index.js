@@ -35,6 +35,8 @@ db.department = require("./department.model.js")(sequelize, Sequelize, DataTypes
 db.providers = require("./providers.model.js")(sequelize, Sequelize, DataTypes);
 db.order = require("./order.model.js")(sequelize, Sequelize, DataTypes);
 db.service = require("./service.model.js")(sequelize, Sequelize, DataTypes);
+db.holiday = require("./holiday.model.js")(sequelize, Sequelize, DataTypes);
+db.petition = require("./petition.model.js")(sequelize, Sequelize, DataTypes);
 
 db.workpoint.belongsTo(db.user, {
   through: "users",
@@ -99,7 +101,43 @@ db.service.belongsTo(db.workpoint, {
   through: "workpints",
   foreignKey: "workpoint_id",
   otherKey: "id"
-})
+});
+
+db.holiday.belongsTo(db.workplace, {
+  through: "workplaces",
+  foreignKey: "workplace_id",
+  otherKey: "id"
+});
+
+db.holiday.belongsTo(db.user, {
+  through: "users",
+  foreignKey: "employee_id",
+  otherKey: "id"
+});
+
+db.holiday.belongsTo(db.department, {
+  through: "department",
+  foreignKey: "department_id",
+  otherKey: "id"
+});
+
+db.petition.belongsTo(db.workplace, {
+  through: "workplaces",
+  foreignKey: "workplace_id",
+  otherKey: "id"
+});
+
+db.petition.belongsTo(db.user, {
+  through: "users",
+  foreignKey: "employee_id",
+  otherKey: "id"
+});
+
+db.petition.belongsTo(db.department, {
+  through: "department",
+  foreignKey: "department_id",
+  otherKey: "id"
+});
 
 // db.providers.belongsTo(db.providers, {
 //   otherKey: "id"

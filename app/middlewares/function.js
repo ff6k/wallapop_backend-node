@@ -268,6 +268,76 @@ checkDuplicateServiceNameOnUpdate = async (req, res, next) => {
   next();
 };
 
+checkDuplicateHolidayNameOnCreate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    return res.status(400).send({
+      message: "Failed! This Provider name is already in use!",
+    });
+  }
+  next();
+};
+
+checkDuplicateHolidayNameOnUpdate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    if (
+      !(
+        provider.dataValues.id == req.body.id &&
+        provider.dataValues.name == req.body.name
+      )
+    ) {
+      return res.status(400).send({
+        message: "Failed! This Provider name is already in use!",
+      });
+    }
+  }
+  next();
+};
+
+checkDuplicatePetitionNameOnCreate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    return res.status(400).send({
+      message: "Failed! This Provider name is already in use!",
+    });
+  }
+  next();
+};
+
+checkDuplicatePetitionNameOnUpdate = async (req, res, next) => {
+  const provider = await db.providers.findOne({
+    where: {
+      name: req.body.name,
+    },
+  });
+  if (provider) {
+    if (
+      !(
+        provider.dataValues.id == req.body.id &&
+        provider.dataValues.name == req.body.name
+      )
+    ) {
+      return res.status(400).send({
+        message: "Failed! This Provider name is already in use!",
+      });
+    }
+  }
+  next();
+};
+
 const globalFunction = {
   checkDuplicateWorkpointName: checkDuplicateWorkpointName,
   checkDuplicateDepartmentOnUpdate: checkDuplicateDepartmentOnUpdate,
@@ -283,6 +353,10 @@ const globalFunction = {
   checkDuplicateOrderNameOnUpdate: checkDuplicateOrderNameOnUpdate,
   checkDuplicateServiceNameOnCreate: checkDuplicateServiceNameOnCreate,
   checkDuplicateSerivceNameOnUpdate: checkDuplicateServiceNameOnUpdate,
+  checkDuplicateHolidayNameOnCreate: checkDuplicateHolidayNameOnCreate,
+  checkDuplicateHolidayNameOnUpdate: checkDuplicateHolidayNameOnUpdate,
+  checkDuplicatePetitionNameOnCreate: checkDuplicatePetitionNameOnCreate,
+  checkDuplicatePetitionNameOnUpdate: checkDuplicatePetitionNameOnUpdate,
 };
 
 module.exports = globalFunction;
